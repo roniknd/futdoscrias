@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fut Dos Crias</title>
+    <link rel="stylesheet" href="estilos/styles.css">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="center">
+        <div class="topo-app card">
+            <img width="60" height="60" src="logo-original.png" alt="">
+            <h1>Fut Dos Crias</h1>
+            <a class="btn-regular" href="/index.html">Início</a>
+        </div>
+
+        <div class="corpo card">
+           <div class="area-novo-jogo">
+                <h2>Inclua os jogadores</h2>
+
+                <label class="label-app" for="nome-jogador">| Nome jogador:</label>
+                <div class="input-area">
+                    <input class="input-app" type="text" name="nome-jogador" id="nome-jogador">
+                    <button id="add-jogador">+</button>
+                </div>    
+
+                <div class="lista-jogadores">
+                    <!-- <div class="jogador-item">
+                        <span></span>
+                        <div data-id="" class="remove">-</div>
+                    </div> -->
+                </div>
+
+                <a id="novos-jogadores" class="btn-app" href="/futdoscrias/pre-jogo.html">AVANÇAR</a>
+
+           </div>
+        </div>
+    </div>
+
+    <script src="classes/Jogador.js"></script>
+
+    <script>
+
+        let nextId = localStorage.getItem('nextId');
+        
+        if (nextId == null) {
+            nextId = 1;
+            localStorage.setItem('nextId', nextId)
+        }
+        
+        let jogadores = [];
+
+        // pega os jogadores armazenados no LocalStorage
+        const jogadoresStorage = JSON.parse(localStorage.getItem("jogadores"));
+        const listaJogadores = document.querySelector(".lista-jogadores");
+
+        // se existir jogadores armazenados, adiciona-os na lista de jogadores no HTML
+        if (jogadoresStorage) {
+            jogadoresStorage.forEach((jogador, index) => {
+                jogadores.push(jogador);
+                const jogadorItem = document.createElement("div");
+                const jogadorOrdem = document.createElement("div");
+                jogadorOrdem.setAttribute("class", "ordem-jogador")
+                jogadorOrdem.innerText = `${index + 1}.`;
+                jogadorItem.appendChild(jogadorOrdem);
+                jogadorItem.classList.add("jogador-item");
+                const jogadorNome = document.createElement("span");
+                jogadorNome.innerText = jogador.nome;
+                jogadorItem.appendChild(jogadorNome);
+                const removeJogador = document.createElement("div");
+                removeJogador.setAttribute("class", "remove-jogador");
+                removeJogador.setAttribute("data-id", jogador.id);
+                removeJogador.innerText = "-";
+                jogadorItem.appendChild(removeJogador);
+                listaJogadores.appendChild(jogadorItem);
+            });
+        }
+
+        
+        // Adiciona jogador na lista
+        const addJogadorBtn = document.getElementById("add-jogador");
+        addJogadorBtn.addEventListener("click", function(){
+            // pega o valor do nome do jogador
+            const nome = document.getElementById("nome-jogador").value;
+
+            // instancia um objeto da classe Jogador
+            const jogador = new Jogador(parseInt(nextId), nome);
+
+            // insere o objeto no array jogadores[]
+            jogadores.push(jogador);
+            
+            // incrementa 1 para o id do proximo Jogador
+            nextId++;
+
+            localStorage.setItem('nextId', nextId)
+
+            // Salva o novo array no storage
+            localStorage.setItem("jogadores", JSON.stringify(jogadores));
+            
+            // limpa o input
+            document.getElementById("nome-jogador").value = "";
+
+            // cria o elemendo jogador-item
+            const jogadorItem = document.createElement("div");
+            jogadorItem.classList.add("jogador-item");
+            const jogadorNome = document.createElement("span");
+            jogadorNome.innerText = jogador.nome;
+            jogadorItem.appendChild(jogadorNome);
+            const removeJogador = document.createElement("div");
+            removeJogador.setAttribute("class", "remove-jogador");
+            removeJogador.setAttribute("data-id", jogador.id);
+            removeJogador.innerText = "-";
+            jogadorItem.appendChild(removeJogador);
+            listaJogadores.appendChild(jogadorItem);
+            
+            location.reload();
+        });
+        
+        // Remove jogador da lista
+        const removeJogadores = document.querySelectorAll(".remove-jogador");
+        removeJogadores.forEach(removeBtn => {
+            removeBtn.addEventListener("click", function() {
+                // pega o id do jogador
+                const id = this.getAttribute('data-id');
+                // encontra o jogador no array
+                const index = jogadores.findIndex(jogador => jogador.id == id);
+                // remove o jogador do array
+                jogadores.splice(index, 1);
+                // remove o jogador do LocalStorage
+                localStorage.setItem("jogadores", JSON.stringify(jogadores));
+                // pega o jogador-item correspondente
+                const jogadorItem = this.parentNode;
+                // remove o jogador do HTML
+                jogadorItem.remove();
+            });
+        });
+
+        
+    </script>
+</body>
+</html>

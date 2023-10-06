@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fut Dos Crias</title>
+    <link rel="stylesheet" href="estilos/styles.css">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="center">
+        <div class="topo-app card">
+            <img width="60" height="60" src="logo-original.png" alt="">
+            <h1></h1>
+            <a class="btn-regular" href="/futdoscrias/index.html">Início</a>
+        </div>
+
+        <div class="corpo card">
+           <div class="area-jogo">
+               <div class="topo-jogo">
+                    <div class="status-jogo">
+                        <label class="label-app">| Status JOGO:</label>
+                        <div class="sinal parado">
+                            Pausado
+                        </div>
+                    </div>
+                    <div class="tempo-jogo">
+                        <label class="label-app">| TEMPO:</label>
+                        <div class="timer-jogo">
+                            <div class="controles-jogo">
+                                <div class="btn-controll play">
+                                    <img width="25px" src="play.png" alt="Play">
+                                </div>
+                                <div class="btn-controll pause">
+                                    <img width="25px" src="pause.png" alt="Pause">
+                                </div>
+                                <!-- <div class="btn-controll stop">
+                                    <img width="25px" src="stop.png" alt="Stop">
+                                </div> -->
+                            </div>
+                            <div class="cronometro">
+                                <span class="tempo-restante"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="topo-times">
+                    <div class="topo-time-1">
+                        <label class="label-app" style="text-align: center;">TIME 1</label>
+                        <div class="gols-time-1">
+                            <div class="add" id="add-gol-1">+</div>
+                            <span class="gols-1">0</span>
+                            <div class="remove" id="remove-gol-1">-</div>
+                        </div>
+                        <div class="lista-jogadores-time-1">
+                            <!-- <div class="jogador-time-1"></div> -->
+                        </div>
+                    </div>
+                    <span class="versus">X</span>
+                    <div class="topo-time-2">
+                        <label class="label-app" style="text-align: center;">TIME 2</label>
+                        <div class="gols-time-2">
+                            <div class="add" id="add-gol-2">+</div>
+                            <span class="gols-2">0</span>
+                            <div class="remove" id="remove-gol-2">-</div>
+                        </div>
+                        <div class="lista-jogadores-time-2">
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="handleModalProxPartida()" class="btn-app ">
+                    PRÓXIMA PARTIDA
+                </button>
+
+                <div class="area-modal-prox">
+                    <div onclick="handleModalProxPartida()" class="fechar-modal">Cancelar</div>
+                    <div class="modal card">    
+                        <span>Quem ganhou ????</span>
+                        <div class="options-vencedor">
+                            <div data-id="1" class="venceu-1">1</div>
+                            <div data-id="2" class="venceu-2">2</div>
+                            <div data-id="3" class="empate">empate</div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+                
+                <label class="label-app">| Proximo time</label>
+                <div class="proximo-time-area">
+                    <div class="proximo-time">
+                        <!-- <div class="proximo-time-jogador"></div> -->
+                    </div>
+                </div>
+
+                <label class="label-app">| Adicionar jogador</label>
+                <div class="input-area">
+                    <input class="input-app" type="text" name="nome-jogador" id="nome-jogador">
+                    <button id="add-jogador">+</button>
+                </div>    
+
+                <!-- <button onclick="visaoJogo()" class="btn-app ">
+                    VISAO DE JOGO
+                </button> -->
+
+           </div>
+        </div>
+    </div>
+
+    <script src="classes/Jogador.js"></script>
+
+    <script>
+
+        var titulo = JSON.parse(localStorage.getItem('dadosJogo')).nome;
+        document.querySelector('h1').innerHTML = titulo;
+
+        // Cria um novo objeto de áudio
+        var audio = new Audio('apito.mp3');
+
+        var tempoJogo = JSON.parse(localStorage.getItem('dadosJogo')).tempoDeJogo;
+        var qtdJogador = JSON.parse(localStorage.getItem('dadosJogo')).jogadoresPorTime;
+        var jogadores = JSON.parse(localStorage.getItem('jogadores'));
+        // var tempoJogo = 0.1;
+
+        const listaJogadores = document.querySelector(".proximo-time");
+
+        const minutos = tempoJogo;
+        const segundos = tempoJogo % 60;
+        document.querySelector(".tempo-restante").innerText = `${minutos < 10 ? "0" + minutos : minutos}:00`;
+
+        window.onload = function() {
+            addJogadoresTime1ToHTML();
+            addJogadoresTime2ToHTML();
+            definirProxReservas();
+            controladorPontos();
+            novoJogador();
+            // handlerStatusGame();
+            // handlerTimerGame();
+        }
+
+        function addJogadoresTime1ToHTML() {
+            // pega os jogadores armazenados no LocalStorage
+            const time1Storage = JSON.parse(localStorage.getItem("time1"));
+
+            // pega o elemento HTML do time 1
+            const time1 = document.querySelector(".lista-jogadores-time-1");
+
+            // percorre os jogadores do time 1 e adiciona-os no HTML
+            for (let i = 0; i < time1Storage.length; i++) {
+                const jogador = time1Storage[i];
+                const jogadorTime1 = document.createElement("div");
+                jogadorTime1.classList.add("jogador-time-1");
+                jogadorTime1.innerText = jogador.nome;
+                jogadorTime1.setAttribute("data-id", jogador.id);
+                time1.appendChild(jogadorTime1);
+            }
+        }
+
+        function addJogadoresTime2ToHTML() {
+            // pega os jogadores armazenados no LocalStorage
+            const time2Storage = JSON.parse(localStorage.getItem("time2"));
+
+            // pega o elemento HTML do time 2
+            const time2 = document.querySelector(".lista-jogadores-time-2");
+
+            // percorre os jogadores do time 2 e adiciona-os no HTML
+            for (let i = 0; i < time2Storage.length; i++) {
+                const jogador = time2Storage[i];
+                const jogadorTime2 = document.createElement("div");
+                jogadorTime2.classList.add("jogador-time-2");
+                jogadorTime2.innerText = jogador.nome;
+                jogadorTime2.setAttribute("data-id", jogador.id);
+                time2.appendChild(jogadorTime2);
+            }
+        }
+
+        function definirProxReservas() {
+            // const jogadores = JSON.parse(localStorage.getItem("jogadores"));
+            // const time1 = JSON.parse(localStorage.getItem("time1"));
+            // const time2 = JSON.parse(localStorage.getItem("time2"));
+
+            // const jogadoresTime1Ids = time1.map(jogador => jogador.id);
+            // const jogadoresTime2Ids = time2.map(jogador => jogador.id);
+
+            // const proxReservas = jogadores.filter(jogador => !jogadoresTime1Ids.includes(jogador.id) && !jogadoresTime2Ids.includes(jogador.id));
+            const proxReservas = JSON.parse(localStorage.getItem("proxReservas"));
+            const containerProxReservas = document.querySelector(".proximo-time");
+
+            for (let i = 0; i < proxReservas.length; i++) {
+                const jogador = proxReservas[i];
+                const jogadorProxReserva = document.createElement("div");
+                jogadorProxReserva.classList.add("proximo-time-jogador");
+                jogadorProxReserva.innerText = jogador.nome;
+                jogadorProxReserva.setAttribute("data-id", jogador.id);
+                containerProxReservas.appendChild(jogadorProxReserva);
+            }
+
+            localStorage.setItem("proxReservas", JSON.stringify(proxReservas));
+        }
+
+        function controladorPontos() {
+            const addGolBtn1 = document.querySelector("#add-gol-1");
+            const removeGolBtn1 = document.querySelector("#remove-gol-1");
+            const golsSpan1 = document.querySelector(".gols-1");
+
+            addGolBtn1.addEventListener("click", function() {
+                let gols = parseInt(golsSpan1.innerText);
+                gols++;
+                golsSpan1.innerText = gols;
+            });
+
+            removeGolBtn1.addEventListener("click", function() {
+                let gols = parseInt(golsSpan1.innerText);
+                if (gols > 0) {
+                    gols--;
+                    golsSpan1.innerText = gols;
+                }
+            });
+
+            const addGolBtn2 = document.querySelector("#add-gol-2");
+            const removeGolBtn2 = document.querySelector("#remove-gol-2");
+            const golsSpan2 = document.querySelector(".gols-2");
+
+            addGolBtn2.addEventListener("click", function() {
+                let gols = parseInt(golsSpan2.innerText);
+                gols++;
+                golsSpan2.innerText = gols;
+            });
+
+            removeGolBtn2.addEventListener("click", function() {
+                let gols = parseInt(golsSpan2.innerText);
+                if (gols > 0) {
+                    gols--;
+                    golsSpan2.innerText = gols;
+                }
+            });
+        }
+
+        // function handlerStatusGame() {
+        const playBtn = document.querySelector(".play img");
+        const pauseBtn = document.querySelector(".pause img");
+        const stopBtn = document.querySelector(".stop img");
+        const sinal = document.querySelector(".sinal");
+        let intervalId;
+        let tempoRestante = tempoJogo * 60;
+
+        playBtn.addEventListener("click", playGame);
+        pauseBtn.addEventListener("click", pauseGame);
+        
+        function playGame() {
+            if(!sinal.classList.contains('em-andamento')) {
+                iniciarCronometro();
+                sinal.classList.remove("parado");
+                sinal.classList.remove("fim-de-jogo");
+                sinal.classList.add("em-andamento");
+                sinal.innerText = "Em andamento";
+            }
+        }
+
+        function pauseGame() {
+                pausarCronometro();
+                sinal.classList.remove("em-andamento");
+                sinal.classList.remove("fim-de-jogo");
+                sinal.classList.add("parado");
+                sinal.innerText = "Pausado";
+            }
+
+        function iniciarCronometro() {
+                intervalId = setInterval(atualizarCronometro, 1000);
+
+                if(tempoRestante/60 == tempoJogo) {
+                    audio.volume = 0.2;
+                    audio.play();
+                }
+            }
+            
+        function atualizarCronometro() {
+                tempoRestante--;
+                const minutos = Math.floor(tempoRestante / 60);
+                const segundos = tempoRestante % 60;
+                document.querySelector(".tempo-restante").innerText = `${minutos}:${segundos < 10 ? "0" + segundos : segundos}`;
+                if (tempoRestante === 0) {
+                    audio.play();
+                    alert("Saiu Cabô");
+                    clearInterval(intervalId);
+                    sinal.classList.remove("parado");
+                    sinal.classList.add("fim-de-jogo");
+                    sinal.classList.remove("em-andamento");
+                    sinal.innerHTML = "Fim de jogo"
+                    tempoRestante = tempoJogo;
+                    document.querySelector(".tempo-restante").innerText = `${minutos}:${segundos < 10 ? "0" + segundos : segundos}`;
+                }
+            }
+            
+        function pausarCronometro() {
+                clearInterval(intervalId);
+            }
+
+        // } -- FIM HANDLERSTATUSGAME ***********************************
+        
+        
+        // ----------------------- PRÓXIMOS JOGO -------------------------
+        // Controla modal de final de jogo
+        let flagModalProx = false;
+        function handleModalProxPartida() {
+            let modal = document.querySelector('.area-modal-prox');
+            if (flagModalProx == false) {
+                modal.style.display = 'flex';
+                flagModalProx = true;
+                pausarCronometro();
+            } else {
+                modal.style.display = 'none';
+                flagModalProx = false;
+                iniciarCronometro();
+            }
+        }
+
+        // Adiciona um evento de click em cada elemendo
+        var elements = document.querySelectorAll(".options-vencedor div");
+        elements.forEach(function(element) {
+            element.addEventListener("click", handleClick);
+        });
+
+
+        // Controla o evento de acordo com o item
+        function handleClick(event) {
+            // Pega o atributo data-id do elemento clicado
+            var winnerId = event.target.getAttribute("data-id");
+
+            // Armazena o winnerId em vencedor
+            var vencedor = winnerId;
+
+            // Próximos reservas atual
+            let proxReservas = [];
+            
+            // Jogadores que entram no time que perdeu; 
+            let entram = [];
+
+            // Checa o valor do vencedor e troca os times e os reservas
+            switch (vencedor) {
+                case '1':
+                    console.log("Time 1 ganhou");
+                    const time2 = JSON.parse(localStorage.getItem("time2"));
+                    proxReservas = JSON.parse(localStorage.getItem("proxReservas"));
+                    
+                    // Insere o time 2 no final do array proxReservas
+                    proxReservas.push(...time2);
+
+                    // Pega os primeiros jogadores do novo array proxReservas
+                    entram = proxReservas.slice(0, qtdJogador);
+                    
+                    // Guarda os jogadores que entram no time 2
+                    localStorage.setItem("time2", JSON.stringify(entram));
+                    
+                    // Pega os primeiros jogadores do array proxReservas de acordo com qtd de jogadores por time
+                    proxReservas.splice(0, qtdJogador);
+
+                    // Guarda os novos reservas no local storage como proxReservas
+                    localStorage.setItem("proxReservas", JSON.stringify(proxReservas));
+
+                    // Atualiza a página
+                    window.location.reload();
+                    break;
+                case '2':
+                    console.log("Time 2 ganhou");
+                    const time1 = JSON.parse(localStorage.getItem("time1"));
+                    proxReservas = JSON.parse(localStorage.getItem("proxReservas"));
+
+                    // Insere o time 1 no final do array proxReservas
+                    proxReservas.push(...time1);
+
+                    // Pega os primeiros jogadores do novo array proxReservas
+                    entram = proxReservas.slice(0, qtdJogador);
+
+                    // Guarda os jogadores que entram no time 1
+                    localStorage.setItem("time1", JSON.stringify(entram));
+
+                    // Pega os primeiros jogadores do array proxReservas de acordo com qtd de jogadores por time
+                    proxReservas.splice(0, qtdJogador);
+
+                    // Guarda os novos reservas no local storage como proxReservas
+                    localStorage.setItem("proxReservas", JSON.stringify(proxReservas));
+
+                    // Atualiza a página
+                    window.location.reload();
+                    break;
+                case '3':
+                    console.log("Empate");
+                    // Do something when vencedor is 3
+                    break;
+                default:
+                    console.log("Valor invalido");
+            }
+        }
+
+        // Adiciona jogador a lista de reservas e atualizo HTML
+        function novoJogador() {
+            let nextId = localStorage.getItem('nextId');
+            
+            if (nextId == null) {
+                nextId = 1;
+                localStorage.setItem('nextId', nextId)
+            }
+
+            const addJogadorBtn = document.getElementById("add-jogador");
+            addJogadorBtn.addEventListener("click", function(){
+                // pega o valor do nome do jogador
+                const nome = document.getElementById("nome-jogador").value;
+
+                // instancia um objeto da classe Jogador
+                const jogador = new Jogador(parseInt(nextId), nome);
+
+                // insere o objeto no array jogadores[]
+                jogadores.push(jogador);
+                
+                // incrementa 1 para o id do proximo Jogador
+                nextId++;
+
+                localStorage.setItem('nextId', nextId)
+
+                // Salva o novo array no storage
+                localStorage.setItem("jogadores", JSON.stringify(jogadores));
+
+                let proxReservas = JSON.parse(localStorage.getItem('proxReservas'));
+                proxReservas.push(jogador);
+                localStorage.setItem("proxReservas", JSON.stringify(proxReservas));
+                
+                // limpa o input
+                document.getElementById("nome-jogador").value = "";
+
+                // cria o elemendo jogador-item
+                // const jogadorItem = document.createElement("div");
+                // jogadorItem.classList.add("proximo-time-jogador");
+                // const jogadorNome = document.createElement("span");
+                // jogadorNome.innerText = jogador.nome;
+                // jogadorItem.appendChild(jogadorNome);
+                // const removeJogador = document.createElement("div");
+                // removeJogador.setAttribute("class", "remove-jogador");
+                // removeJogador.setAttribute("data-id", jogador.id);
+                // removeJogador.innerText = "-";
+                // jogadorItem.appendChild(removeJogador);
+                // listaJogadores.appendChild(jogadorItem);
+
+                // location.reload();
+            });
+
+        }
+
+
+    </script>
+</body>
+</html>

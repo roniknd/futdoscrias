@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "..\\..\\Compiladores\\PredictionTable-master"
+		},
+		{
+			"path": "..\\..\\Compiladores\\Compilador"
+		},
+		{
+			"path": "D:\\Rocketset"
+		}
+	],
+	"settings": {},
+	"extensions": {
+		"recommendations": [
+			"ms-vscode.cmake-tools"
+		]
+	}
+}

@@ -1,0 +1,434 @@
+:root {
+    /* background-color: #00b7ff; */
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Raleway', sans-serif;
+}
+body {
+    background-color: #FFF;
+    margin: 0;
+}
+.center {
+    width: 100%;
+    max-width: 720px;
+    margin: auto;
+    padding: 0 12px;
+}
+.topo-app {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 12px;
+    height: 100%;
+    width: 100%;
+}
+.card {
+    background-color: #FFF;
+    margin-top: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.topo-app h1 {
+    color: #000;
+    margin: 0 20px;
+    font-size: 18px;
+    font-style: italic;
+}
+.corpo {
+    width: 100%;
+    max-width: 720px;
+    min-height: 500px;
+}
+.area-option-game {
+    width: 100%;
+    height: 10%;
+    padding: 0 10px;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.btn-regular {
+    width:100px;
+    height:30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #909090;
+    border-radius: 6px;
+    color: #202020;
+    font-weight: 500;
+    text-decoration: none;
+}
+.btn-app {
+    cursor: pointer;
+    width: 100%;
+    background: linear-gradient(to top, #00b7ff, #3adbec);
+    height: 60px;
+    color: #FFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 22px;
+    font-weight: 800;
+    border-radius: 12px;
+    margin: auto;
+    border: 0;
+}
+.area-novo-jogo {
+    width: 100%;
+    height: 100%;
+    background-color: #ccc;
+    border-radius: 12px;
+    padding: 6px 6px 30px 6px;
+}
+.area-novo-jogo h2 {
+    margin-top: 0;
+    text-align: center;
+    margin-bottom: 30px;
+}
+.input-app {
+    width: 100%;
+    height: 40px;
+    padding-left: 6px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #909090;
+}
+.label-app {
+    font-size: 14px;
+    font-weight: 600;
+}
+.input-area {
+    margin: 5px 0 15px 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+#add-jogador,
+.add {
+    cursor: pointer;
+    width: 30px;
+    min-width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-left: 10px;
+    border: 0;
+    background: linear-gradient(to top, #00b7ff, #3adbec);
+    font-size: 32px;
+    color: #FFF;
+}
+.remove-jogador,
+.remove {
+    cursor: pointer;
+    min-width: 30px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-left: 10px;
+    border: 0;
+    background: linear-gradient(to top, #ac0000, #ce0a0a);
+    font-size: 32px;
+    font-weight: 800;
+    color: #FFF;
+}
+.lista-jogadores {
+    width: 100%;
+    margin-bottom: 30px;
+}
+.jogador-item {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.jogador-item span {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 5px;
+    height: 40px;
+    background-color: #FFF;
+    border: 1px solid #909090;
+}
+.ordem-jogador {
+    min-width: 30px;
+}
+
+.area-pre-times {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+.pre-time-1,
+.pre-time-2 {
+    width: 49%;
+}
+.lista-pre-jogadores {
+    border-bottom: 1px solid #CCC;
+    background-color: #FFF;
+    border: 1px solid #909090;
+    margin-top: 5px;
+}
+.pre-jogador-item {
+    height: 35px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    border-bottom: 1px solid #909090;
+}
+.area-pre-reservas {
+    width: 100%;
+}
+.lista-pre-reservas {
+    width: 100%;
+    border: 1px solid #909090;
+    margin: 5px 0 20px 0;
+}
+.item-pre-reserva {
+    background-color: #FFF;
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    padding-left: 5px;
+}
+.area-ordenacao {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0 20px 0;
+}
+#ordem-chegada,
+#ordem-aleatoria {
+    width: 49%;
+    height: 40px;
+    background-color: #00b7ff;
+    border: 1px solid #FFF;
+    color: #FFF;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.area-jogo {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 6px;
+    background-color: #D6D5D5;
+}
+.topo-jogo {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.status-jogo {
+    width: 45%;
+}
+.tempo-jogo {
+    width: 45%;
+}
+.sinal {
+    margin-top: 10px;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFF;
+    font-weight: 600;
+    border-radius: 6px;
+}
+.em-andamento {
+    background-color: #38C93E;
+}
+.parado {
+    background-color: #909090;
+}
+.fim-de-jogo {
+    background-color: #ac0000;
+}
+.timer-jogo {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    background-color: #FFF;
+    border: 1px solid #909090;
+    border-radius: 6px;
+    height: 40px;
+    padding: 0 6px;
+}
+.controles-jogo {
+    height: 100%;
+    gap: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.cronometro {
+    font-weight: 600;
+}
+.btn-controll {
+    cursor: pointer;
+}
+.topo-times {
+    margin: 20px 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.versus {
+    font-size: 24px;
+    font-weight: 800;
+}
+.topo-time-1,
+.topo-time-2 {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+}
+.lista-jogadores-time-1,
+.lista-jogadores-time-2 {
+    width: 100%;
+    background-color: #FFF;
+    border: 1px solid #909090;
+}
+.jogador-time-1,
+.jogador-time-2,
+.proximo-time-jogador {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: 35px;
+    border-bottom: 1px solid #909090;
+    padding-left: 6px;
+}
+.proximo-time-area {
+    width: 100%;
+    margin-bottom: 20px;
+}
+.proximo-time {
+    width: 100%;
+    border: 1px solid #909090;
+    margin-top: 10px;
+    background-color: #FFF;
+}
+.gols-time-1,
+.gols-time-2 {
+    width: 100%;
+}
+.gols-time-1,
+.gols-time-2 {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+    padding: 6px;
+    border: 1px solid #909090;
+    background-color: #FFF;
+    margin: 10px 0;
+    border-radius: 6px;
+}
+.area-modal-prox {
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background-color: #00000030;
+}
+.fechar-modal {
+    width: 80%;
+    height: 40px;
+    text-align: center;
+    color: #FF0000;
+    font-weight: 600;
+    border-radius: 12px;
+    background-color: #FFF;
+}
+.modal {
+    opacity: 1 !important;
+    width: 80%;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFF;
+    box-shadow: 0px 0px 5px 2px #50505050;
+}
+.options-vencedor {
+    width: 100%;
+    display: flex;
+    padding: 0 5px;
+    justify-content: center;
+    gap: 30px;
+}
+.modal span {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+.venceu-1 {
+    width: 80px;
+    height: 60px;
+    font-weight: 800;
+    color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    background-color: #4aff50;
+    border: 2px solid #000;
+    border-radius: 18px;
+}
+.venceu-2 {
+    width: 80px;
+    height: 60px;
+    font-weight: 800;
+    color: #FFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    background-color: #000;
+    border: 2px solid #4aff50;
+    border-radius: 18px;
+}
+.empate {
+    font-size: 14px !important;
+    width: 80px;
+    height: 60px;
+    font-weight: 800;
+    color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    background-color: #909090;
+    border: 2px solid #000;
+    border-radius: 18px;
+}

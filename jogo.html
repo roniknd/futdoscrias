@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fut dos Crias</title>
+    <link rel="stylesheet" href="estilos/styles.css">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="center">
+        <div class="topo-app card">
+            <img width="60" height="60" src="logo-original.png" alt="">
+            <h1>Fut Dos Crias</h1>
+            <a class="btn-regular" href="/futdoscrias/index.html">Início</a>
+        </div>
+
+        <div class="corpo card">
+           <div class="area-novo-jogo">
+                <h2>Novo jogo</h2>
+
+                <label class="label-app" for="nome-sessao">| Nome da sessão:</label>
+                <div class="input-area">
+                    <input class="input-app" type="text" name="nome-sessao" id="nome-sessao">
+                </div>
+                
+                <label class="label-app" for="nome-sessao">| Número de jogadores por time: <small>(não conta goleiro)</small></label>
+                <div class="input-area">
+                    <input class="input-app" type="number" name="jogadores-por-time" id="jogadores-por-time">
+                </div>
+
+                <label class="label-app" for="tempo-jogo">| Tempo de jogo: <small>(em minutos)</small></label>
+                <div class="input-area">
+                    <input class="input-app" type="number" name="tempo-jogo" id="tempo-jogo">
+                </div>
+
+                <label class="label-app" for="pontos-fim">| Pontos para acabar:</label>
+                <div class="input-area">
+                    <input class="input-app" type="number" name="pontos-fim" id="pontos-fim">
+                </div>
+                
+
+                <div id="novo-jogo" class="btn-app" href="">PROXIMO</div>
+
+           </div>
+        </div>
+    </div>
+
+    <script src="classes/Jogo.js"></script>
+
+    <script>
+
+        const avancarBtn = document.getElementById("novo-jogo");
+        avancarBtn.addEventListener("click", function(){
+            const nomeSessao = document.getElementById("nome-sessao").value;
+            const jogadoresPorTime = document.getElementById("jogadores-por-time").value;
+            const tempoDeJogo = document.getElementById("tempo-jogo").value;
+            const pontosParaAcabar = document.getElementById("pontos-fim").value;
+            const novoJogo = new Jogo(nomeSessao, 'futebol', parseInt(jogadoresPorTime), parseInt(tempoDeJogo), parseInt(pontosParaAcabar));
+            const jogo = JSON.stringify(novoJogo);
+            localStorage.setItem("dadosJogo", jogo);
+
+            window.location.href = '/futdoscrias/jogadores.html';
+            
+        });
+    </script>
+</body>
+</html>
